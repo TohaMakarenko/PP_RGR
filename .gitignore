@@ -1,0 +1,15 @@
+out/
+other/
+obj/
+bin/
+Debug/
+Release/
+x64/
+x86/
+pal/
+.vs/
+*.exe
+*.pdb
+*.lik
+rgr/
+*.TMP
