@@ -12,7 +12,7 @@ package body Data is
       temp: Integer;
       max: Integer;
    begin
-      max:=-32000;
+      max:= Integer'First;
       loop1:
       for i in start .. finish loop
 
