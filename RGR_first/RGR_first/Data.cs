@@ -11,14 +11,27 @@ namespace RGR_first
     {
         private int size;
 
-        private int[][] MB, MC, MM;
+        private int[][] MB, mc, MM;
         private int a = int.MinValue;
-        private object locker = new object();
+        private object aLocker = new object();
+        private object mcLocker = new object();
 
-        private int Max
+        private int[][] MC
+        {
+            get {
+                lock (mcLocker) {
+                    return mc;
+                }
+            }
+            set {
+                mc = value;
+            }
+        }
+
+        private int A
         {
             set {
-                lock (locker) {
+                lock (aLocker) {
                     if (value > a)
                         a = value;
                 }
@@ -28,12 +41,12 @@ namespace RGR_first
             }
         }
 
-        private Semaphore S121 = new Semaphore(0, 1),
-            S231 = new Semaphore(0, 1),
-            S341 = new Semaphore(0, 1),
-            S411 = new Semaphore(0, 1),
-            S211 = new Semaphore(0, 1),
-            S412 = new Semaphore(0, 1);
+        private Semaphore inputMM = new Semaphore(0, 3),
+            inputMB = new Semaphore(0, 3),
+            inputMC = new Semaphore(0, 3),
+            a2 = new Semaphore(0, 1),
+            a3 = new Semaphore(0, 1),
+            a4 = new Semaphore(0, 1);
 
         public Data(int size)
         {
@@ -46,19 +59,21 @@ namespace RGR_first
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             MM = Utils.GetMatrixOfOne(size);
-            S411.WaitOne();
-            S121.Release();
+            inputMM.Release(3);
+            inputMC.WaitOne();
+            inputMB.WaitOne();
+            var MC1 = MC;
+            A = MBxMCplusMMmaxPart(MB, MC1, MM, 0, MB.Length / 4);
 
-            Max = MBxMCplusMMmaxPart(MB, MC, MM, 0, MB.Length / 4);
-
-            S412.WaitOne();
-            S211.WaitOne();
+            a2.WaitOne();
+            a3.WaitOne();
+            a4.WaitOne();
 
             stopwatch.Stop();
 
             Console.WriteLine("Task1 finished");
 
-            Console.WriteLine($"a = {Max}");
+            Console.WriteLine($"a = {A}");
             Console.WriteLine($"Elapsed time: {stopwatch.ElapsedMilliseconds} ms " +
                 $"({stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds})");
         }
@@ -67,21 +82,24 @@ namespace RGR_first
         {
             Console.WriteLine("Task2 started");
             MB = Utils.GetMatrixOfOne(size);
-            S121.WaitOne();
-            S231.Release();
-
-            Max = MBxMCplusMMmaxPart(MB, MC, MM, MB.Length / 4, MB.Length / 2);
-            S211.Release();
+            inputMB.Release(3);
+            inputMC.WaitOne();
+            inputMM.WaitOne();
+            var MC2 = MC;
+            A = MBxMCplusMMmaxPart(MB, MC2, MM, MB.Length / 4, MB.Length / 2);
+            a2.Release();
             Console.WriteLine("Task2 finished");
         }
 
         public void Task3()
         {
             Console.WriteLine("Task3 started");
-            S231.WaitOne();
-
-            Max = MBxMCplusMMmaxPart(MB, MC, MM, MB.Length / 2, 3 * MB.Length / 4 );
-            S341.Release();
+            inputMB.WaitOne();
+            inputMC.WaitOne();
+            inputMM.WaitOne();
+            var MC3 = MC;
+            A = MBxMCplusMMmaxPart(MB, MC3, MM, MB.Length / 2, 3 * MB.Length / 4);
+            a3.Release();
             Console.WriteLine("Task3 finished");
         }
 
@@ -89,12 +107,12 @@ namespace RGR_first
         {
             Console.WriteLine("Task4 started");
             MC = Utils.GetMatrixOfOne(size);
-            S411.Release();
-            S341.WaitOne();
-
-            Max = MBxMCplusMMmaxPart(MB, MC, MM, 3 * MB.Length / 4, MB.Length);
-
-            S412.Release();
+            inputMC.Release(3);
+            inputMB.WaitOne();
+            inputMM.WaitOne();
+            var MC4 = MC;
+            A = MBxMCplusMMmaxPart(MB, MC4, MM, 3 * MB.Length / 4, MB.Length);
+            a4.Release();
             Console.WriteLine("Task4 finished");
         }
 
@@ -115,6 +133,6 @@ namespace RGR_first
             return max;
         }
 
-        
+
     }
 }

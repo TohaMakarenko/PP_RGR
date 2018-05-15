@@ -10,7 +10,7 @@ namespace RGR_first
         {
             Console.WriteLine("a = mах(MB*MC+ ММ)");
 
-            Data data = new Data(3);
+            Data data = new Data(100);
 
             var t1 = new Thread(data.Task1);
             var t2 = new Thread(data.Task2);
