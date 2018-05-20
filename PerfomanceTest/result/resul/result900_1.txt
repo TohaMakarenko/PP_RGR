@@ -1,0 +1,72 @@
+==============================
+started at 19.05.2018 14:37:47
+==============================
+warm up started
+warm up finished
+
+Work started
+work 0
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task2 finished
+Task3 finished
+Task1 finished
+a = 901
+Task4 finished
+work #0: Elapsed time: 5858 ms (0:5.858)
+
+work 1
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task2 finished
+Task3 finished
+Task4 finished
+Task1 finished
+a = 901
+work #1: Elapsed time: 5795 ms (0:5.795)
+
+work 2
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task2 finished
+Task3 finished
+Task1 finished
+a = 901
+Task4 finished
+work #2: Elapsed time: 5785 ms (0:5.785)
+
+work 3
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task3 finished
+Task2 finished
+Task1 finished
+a = 901
+Task4 finished
+work #3: Elapsed time: 5778 ms (0:5.778)
+
+work 4
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task3 finished
+Task2 finished
+Task4 finished
+Task1 finished
+a = 901
+work #4: Elapsed time: 5950 ms (0:5.950)
+
+==============================
+Elapsed avarage: 5833
+==============================
+
+5,833

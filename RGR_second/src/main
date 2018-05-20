@@ -1,0 +1,32 @@
+GNAT GPL 2017 (20170515-63)
+Copyright 1992-2017, Free Software Foundation, Inc.
+
+Compiling: main.adb
+Source file time stamp: 2018-05-19 10:09:12
+Compiled at: 2018-05-20 03:54:16
+
+     1. with Ada.Text_IO; use Ada.Text_IO;
+     2. with Data;
+     3. with Ada.Integer_Text_IO;
+     4. with Ada.Synchronous_Task_Control;
+     5. use Ada.Integer_Text_IO;
+     6. use Ada.Synchronous_Task_Control;
+     7. with Ada.Calendar; use Ada.Calendar;
+     8. -- a = max(MB*MC + MM)
+     9.
+    10. procedure Main is
+    11.    package data1 is new data(2400);
+    12.    use data1;
+    13.    startTime: Time;
+    14.    endTime: Time;
+    15. begin
+    16.    Put_Line("started");
+    17.    Put_Line("a = max(MB*MC + MM)");
+    18.    startTime := Clock;
+    19.    Func;
+    20.    endTime := Clock;
+    21.    Put("Elapsed: ");
+    22.    Put(Duration'Image(endTime - startTime));
+    23. end Main;
+
+ 23 lines: No errors

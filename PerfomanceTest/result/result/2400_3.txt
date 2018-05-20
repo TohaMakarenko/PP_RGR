@@ -1,0 +1,12 @@
+started
+a = max(MB*MC + MM)
+t2 started
+t1 started
+t4 started
+t3 started
+t3 finished
+t1 finished
+a =  2402
+t4 finished
+t2 finished
+Elapsed:  90.341898735

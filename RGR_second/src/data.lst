@@ -1,0 +1,225 @@
+GNAT GPL 2017 (20170515-63)
+Copyright 1992-2017, Free Software Foundation, Inc.
+
+Compiling: data.adb
+Source file time stamp: 2018-05-14 22:09:42
+Compiled at: 2018-05-16 22:42:16
+
+     1. with Ada.Text_IO; use Ada.Text_IO;
+     2. with Ada.Integer_Text_IO;
+     3. with Ada.Synchronous_Task_Control;
+     4. use Ada.Integer_Text_IO;
+     5. use Ada.Synchronous_Task_Control;
+     6.
+     7. -- a = max(MB*MC + MM)
+     8.
+     9. package body Data is
+    10.
+    11.    function MBxMCplusMMmaxPart(MB, MC, MM: Matrix; start, finish: Integer) return Integer is
+    12.       temp: Integer;
+    13.       max: Integer;
+    14.    begin
+    15.       max:= Integer'First;
+    16.       loop1:
+    17.       for i in start .. finish loop
+    18.
+    19.          loop2:
+    20.          for j in 0 .. MB'Length - 1  loop
+    21.             temp:=0;
+    22.             loop3:
+    23.             for k in 0 .. MB'Length - 1 loop
+    24.                temp:=temp + MB(i)(k) * MC(k)(j);
+    25.             end loop loop3;
+    26.             temp:= temp + MM(i)(j);
+    27.             if temp > max then
+    28.                max := temp;
+    29.             end if;
+    30.          end loop loop2;
+    31.       end loop loop1;
+    32.       return max;
+    33.    end MBxMCplusMMmaxPart;
+    34.
+    35.    function getVectorOfOne return Vector is
+    36.       result: Vector;
+    37.    begin
+    38.       for i in 0..N loop
+    39.          result(i) := 1;
+    40.       end loop;
+    41.       return result;
+    42.    end getVectorOfOne;
+    43.
+    44.    function getMatrixOfOne return Matrix is
+    45.       result: Matrix;
+    46.    begin
+    47.       for i in 0..N loop
+    48.          result(i) := getVectorOfOne;
+    49.       end loop;
+    50.       return result;
+    51.    end getMatrixOfOne;
+    52.
+    53.
+    54.    -- a = max(MB*MC + MM)
+    55.    procedure Func is
+    56.       task T1 is
+    57.          entry acceptMC (m: in Matrix);
+    58.          entry maxT2 (m: in Integer);
+    59.          entry maxT4T3 (m: in Integer);
+    60.          pragma Storage_Size (10_000_000);
+    61.          pragma Task_Name ("Task1");
+    62.       end T1;
+    63. 	  
+    64. 	  task T2 is
+    65.          entry acceptMMandMCoutMB (m1, m2: in Matrix; m3: out Matrix);
+    66.          pragma Storage_Size (10_000_000);
+    67.          pragma Task_Name ("Task2");
+    68.       end T2;
+    69.
+    70. 	  task T3 is
+    71.          entry acceptMMandMCandMB (m1, m2, m3: in Matrix);
+    72.          pragma Storage_Size (10_000_000);
+    73.          pragma Task_Name ("Task3");
+    74.       end T3;
+    75. 	  
+    76. 	  task T4 is
+    77.          entry acceptMMandMB (m1, m2: in Matrix);
+    78.          entry maxT3 (m: in Integer);
+    79.          pragma Storage_Size (10_000_000);
+    80.          pragma Task_Name ("Task4");
+    81.       end T4;
+    82. 	  
+    83.       task body T1 is
+    84.          MB: Matrix;
+    85.          MC: Matrix;
+    86.          MM: Matrix;
+    87.          max: Integer;
+    88.       begin
+    89.          Put_Line("t1 started");
+    90. 			
+    91.          MM:=getMatrixOfOne;
+    92. 		
+    93.          accept acceptMC (m: in Matrix) do
+    94.             MC:=m;
+    95.          end acceptMC;
+    96. 		 
+    97.          T2.acceptMMandMCoutMB(MM, MC, MB);
+    98. 		 
+    99.          max:=MBxMCplusMMmaxPart(MB, MC, MM, 0, MB'length/4-1);
+   100. 		 
+   101.          accept maxT2 (m: in Integer) do
+   102.             if m > max then
+   103.                max := m;
+   104.             end if;
+   105.          end maxT2;
+   106. 		 
+   107.          accept maxT4T3 (m: in Integer) do
+   108.             if m > max then
+   109.                max := m;
+   110.             end if;
+   111.          end maxT4T3;
+   112.          Put_Line("t1 finished");
+   113.          Put_Line("a = " & Integer'Image(max) );
+   114.       end T1;
+   115.
+   116.       task body T2 is
+   117.          MB: Matrix;
+   118.          MC: Matrix;
+   119.          MM: Matrix;
+   120.          max: Integer;
+   121.       begin
+   122.          Put_Line("t2 started");
+   123. 		 
+   124.          MB:=getMatrixOfOne;
+   125. 		 
+   126.          accept acceptMMandMCoutMB (m1, m2: in Matrix; m3: out Matrix) do
+   127.             MC:=m1;
+   128.             MM:=m2;
+   129.             m3:=MB;
+   130.          end acceptMMandMCoutMB;
+   131. 		 
+   132.          T3.acceptMMandMCandMB(MB, MC, MM);
+   133. 		 
+   134.          max:=MBxMCplusMMmaxPart(MB, MC, MM, MB'length/4, MB'length/2-1);
+   135. 		 
+   136.          T1.maxT2(max);
+   137. 		 
+   138.          Put_Line("t2 finished");
+   139.       end T2;
+   140.
+   141.       task body T3 is
+   142.          MB: Matrix;
+   143.          MC: Matrix;
+   144.          MM: Matrix;
+   145.          max: Integer;
+   146.       begin
+   147.          Put_Line("t3 started");
+   148. 		 
+   149.          accept acceptMMandMCandMB (m1, m2, m3: in Matrix) do
+   150.             MB:=m1;
+   151.             MC:=m2;
+   152.             MM:=m3;
+   153.          end acceptMMandMCandMB;
+   154. 		 
+   155.          T4.acceptMMandMB(MM, MB);
+   156. 		 
+   157.          max:=MBxMCplusMMmaxPart(MB, MC, MM, MB'length/2, 3*MB'length/4-1);
+   158. 		 
+   159.          T4.maxT3(max);
+   160. 		 
+   161.          Put_Line("t3 finished");
+   162.
+   163.       end T3;
+   164.
+   165.       task body T4 is
+   166.          MB: Matrix;
+   167.          MC: Matrix;
+   168.          MM: Matrix;
+   169.          max: Integer;
+   170.       begin
+   171.          Put_Line("t4 started");
+   172.          
+   173.          MC:= getMatrixOfOne;
+   174.          T1.acceptMC(MC);
+   175. 		 
+   176.          accept acceptMMandMB (m1, m2: in Matrix) do
+   177.             MB:=m1;
+   178.             MM:=m2;
+   179.          end acceptMMandMB;
+   180. 		 
+   181.          max:=MBxMCplusMMmaxPart(MB, MC, MM, 3*MB'length/4, MB'length-1);
+   182. 		 
+   183.          accept maxT3 (m: in Integer) do
+   184.             if m > max then
+   185.                max := m;
+   186.             end if;
+   187.          end maxT3;
+   188. 		 
+   189. 		 T1.maxT4T3(max);
+   190. 		 
+   191.          Put_Line("t4 finished");
+   192.       end T4;
+   193.
+   194.
+   195.    begin
+   196.       Put("");
+   197.    end Func;
+   198. end Data;
+
+Compiling: data.ads
+Source file time stamp: 2018-05-12 23:22:52
+Compiled at: 2018-05-16 22:42:16
+
+     1. with Ada.Synchronous_Task_Control;
+     2. use Ada.Synchronous_Task_Control;
+     3.
+     4. generic
+     5.    n: Integer;
+     6. package Data is
+     7.
+     8.    type Vector is array(0..n) of Integer;
+     9.    type Matrix is array(0..n) of Vector;
+    10.
+    11.    procedure Func;
+    12.
+    13. end Data;
+
+ 198 lines: No errors

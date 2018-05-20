@@ -1,0 +1,49 @@
+==============================
+started at 19.05.2018 14:50:20
+==============================
+warm up started
+warm up finished
+
+Work started
+work 0
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task2 finished
+Task3 finished
+Task4 finished
+Task1 finished
+a = 1801
+work #0: Elapsed time: 49079 ms (0:49.79)
+
+work 1
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task4 finished
+Task3 finished
+Task2 finished
+Task1 finished
+a = 1801
+work #1: Elapsed time: 49342 ms (0:49.342)
+
+work 2
+Task1 started
+Task2 started
+Task3 started
+Task4 started
+Task2 finished
+Task4 finished
+Task3 finished
+Task1 finished
+a = 1801
+work #2: Elapsed time: 56651 ms (0:56.651)
+
+==============================
+Elapsed avarage: 51690
+==============================
+
+
+51,690

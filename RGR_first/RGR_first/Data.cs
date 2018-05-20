@@ -7,7 +7,7 @@ using System.Threading;
 namespace RGR_first
 {
     // a = mах(MB*MC+ ММ)
-    class Data
+    public class Data
     {
         private int size;
 
@@ -56,8 +56,6 @@ namespace RGR_first
         public void Task1()
         {
             Console.WriteLine("Task1 started");
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
             MM = Utils.GetMatrixOfOne(size);
             inputMM.Release(3);
             inputMC.WaitOne();
@@ -69,13 +67,9 @@ namespace RGR_first
             a3.WaitOne();
             a4.WaitOne();
 
-            stopwatch.Stop();
-
             Console.WriteLine("Task1 finished");
 
             Console.WriteLine($"a = {A}");
-            Console.WriteLine($"Elapsed time: {stopwatch.ElapsedMilliseconds} ms " +
-                $"({stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds})");
         }
 
         public void Task2()

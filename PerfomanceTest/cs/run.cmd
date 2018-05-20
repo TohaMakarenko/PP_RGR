@@ -1,0 +1,1 @@
+dotnet .\PerfomanceTest.dll 100

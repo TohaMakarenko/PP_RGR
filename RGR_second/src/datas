@@ -1,0 +1,22 @@
+GNAT GPL 2017 (20170515-63)
+Copyright 1992-2017, Free Software Foundation, Inc.
+
+Compiling: data.ads
+Source file time stamp: 2018-05-12 23:22:52
+Compiled at: 2018-05-20 03:55:05
+
+     1. with Ada.Synchronous_Task_Control;
+     2. use Ada.Synchronous_Task_Control;
+     3.
+     4. generic
+     5.    n: Integer;
+     6. package Data is
+     7.
+     8.    type Vector is array(0..n) of Integer;
+     9.    type Matrix is array(0..n) of Vector;
+    10.
+    11.    procedure Func;
+    12.
+    13. end Data;
+
+ 13 lines: No errors
